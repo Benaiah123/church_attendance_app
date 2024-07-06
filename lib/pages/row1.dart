@@ -29,19 +29,23 @@ class Row1State extends State<Row1> with GetFormValues {
       // runSpacing: 10,
       children: [
         CustomTextField(
-          labeltext: "Adult-Onsite",
+          labelText: "Adult-Onsite",
           controller: adultOnline,
           onChange: onChange,
         ),
-        const SizedBox(height:20,),
+        const SizedBox(
+          height: 20,
+        ),
         CustomTextField(
-          labeltext: 'Adult-Online',
+          labelText: 'Adult-Online',
           controller: adultOnsite,
           onChange: onChange,
         ),
-        const SizedBox(height:20,),
+        const SizedBox(
+          height: 20,
+        ),
         CustomTextField(
-          labeltext: 'Kids',
+          labelText: 'Kids',
           controller: kids,
           onChange: onChange,
         ),

@@ -9,10 +9,11 @@ import 'package:church_attendance_app/utils/event_selector.dart';
 import 'package:church_attendance_app/utils/gsheet.dart';
 import 'package:church_attendance_app/utils/text_field.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:church_attendance_app/utils/svgs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class CustomHomepage extends StatefulWidget {
   const CustomHomepage({super.key});
@@ -24,7 +25,7 @@ class CustomHomepage extends StatefulWidget {
 class _CustomHomepageState extends State<CustomHomepage> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   TextEditingController eventController = TextEditingController();
-  DateTime? selectedDate;
+  DateTime selectedDate =DateTime.now();
   bool isLoading = false;
   List<String> weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   int selectedIndex = -1;
@@ -48,6 +49,7 @@ class _CustomHomepageState extends State<CustomHomepage> {
     GlobalKey<Row7State>(),
   ];
   late final List<Widget> _pages;
+  DateTime startDate = DateTime.now();
 
   @override
   void initState() {
@@ -82,12 +84,11 @@ class _CustomHomepageState extends State<CustomHomepage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leadingWidth: 0,
           backgroundColor: Colors.white,
           scrolledUnderElevation: 0,
           elevation: 0,
           title: const Text(
-            "Attendance Entry",
+            "Main Events",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
@@ -99,66 +100,136 @@ class _CustomHomepageState extends State<CustomHomepage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: MediaQuery.paddingOf(context).top + 10,
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        height: 300,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 248, 248, 248),
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: const [
-                              BoxShadow(spreadRadius: -10, blurRadius: 10)
-                            ]),
-                        child: SfDateRangePicker(
-                          onSelectionChanged: (value) {
-                            selectedDate = value.value;
-                          },
-                          selectionColor: const Color.fromARGB(255, 1, 79, 143),
-                          selectionTextStyle: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600, fontSize: 14),
-                          monthViewSettings: DateRangePickerMonthViewSettings(
-                              viewHeaderHeight: 40,
-                              viewHeaderStyle: DateRangePickerViewHeaderStyle(
-                                textStyle: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 13,
+                      IntrinsicWidth(
+                        child: TextButton(
+                            onPressed: () {
+                              showDatePicker(
+                                      context: context,
+                                      firstDate:
+                                          DateTime(DateTime.now().year - 5),
+                                      initialDate: selectedDate,
+                                      lastDate:
+                                          DateTime(DateTime.now().year + 5))
+                                  .then((value) {
+                                if (value != null) {
+                                  startDate = value;
+                                  selectedDate = value;
+                                  print(selectedDate);
+                                  setState(() {});
+                                }
+                              });
+                            },
+                            style: const ButtonStyle(
+                                visualDensity: VisualDensity.compact,
+                                padding:
+                                    WidgetStatePropertyAll(EdgeInsets.zero)),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  DateFormat.yMMMM().format(startDate),
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black),
                                 ),
-                              )),
-                          monthCellStyle: DateRangePickerMonthCellStyle(
-                            textStyle: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w500, fontSize: 13),
-                            todayTextStyle: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
-                            // disabledDatesTextStyle: GoogleFonts.poppins(
-                            //   fontWeight: FontWeight.w500,
-                            //   fontSize: 14,
-                            //   color: Color.fromARGB(255, 84, 84, 84),
-                            // ),
-
-                            specialDatesTextStyle: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: const Color.fromARGB(255, 1, 79, 143),
-                            ),
-                          ),
-                          headerStyle: DateRangePickerHeaderStyle(
-                              textStyle: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600, fontSize: 24),
-                              backgroundColor: Colors.transparent),
-                          backgroundColor: Colors.transparent,
-                        ),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 4, left: 6),
+                                  child: Icon(
+                                    Icons.calendar_month_rounded,
+                                    size: 28,
+                                    color: Color(0xff005A8C),
+                                  ),
+                                )
+                              ],
+                            )),
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      DatePicker(
+                        // DateTime(DateTime.now().year,DateTime.now().month-3),
+                        startDate,
+                        initialSelectedDate: selectedDate,
+                        height: 90,
+                        selectionColor: const Color(0xff005A8C),
+                        selectedTextColor: Colors.white,
+                        onDateChange: (date) {
+                          setState(() {
+                            selectedDate = date;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20,),
+                      Row(children: [
+                        Expanded(child: _attendanceTypeSelection("Onsite",icon: "assets/healthicons--church.svg",isSelected: selectedIndex ==0,onTap: () =>
+                                  setState(() => selectedIndex = 0),)),
+                                  const SizedBox(width: 20,),
+                        Expanded(child: _attendanceTypeSelection("Online",isSelected: selectedIndex ==1,onTap: () =>
+                                  setState(() => selectedIndex = 1),)),
+                      ],),
+                      // Container(
+                      //   padding: const EdgeInsets.all(10),
+                      //   height: 300,
+                      //   clipBehavior: Clip.antiAlias,
+                      //   decoration: BoxDecoration(
+                      //       color: const Color.fromARGB(255, 248, 248, 248),
+                      //       borderRadius: BorderRadius.circular(15),
+                      //       boxShadow: const [
+                      //         BoxShadow(spreadRadius: -10, blurRadius: 10)
+                      //       ]),
+                      //   child: SfDateRangePicker(
+                      //     onSelectionChanged: (value) {
+                      //       selectedDate = value.value;
+                      //     },
+                      //     selectionColor: const Color.fromARGB(255, 1, 79, 143),
+                      //     selectionTextStyle: GoogleFonts.poppins(
+                      //         fontWeight: FontWeight.w600, fontSize: 14),
+                      //     monthViewSettings: DateRangePickerMonthViewSettings(
+                      //         viewHeaderHeight: 40,
+                      //         viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                      //           textStyle: GoogleFonts.poppins(
+                      //             fontWeight: FontWeight.w600,
+                      //             fontSize: 13,
+                      //           ),
+                      //         )),
+                      //     monthCellStyle: DateRangePickerMonthCellStyle(
+                      //       textStyle: GoogleFonts.poppins(
+                      //           fontWeight: FontWeight.w500, fontSize: 13),
+                      //       todayTextStyle: GoogleFonts.poppins(
+                      //         fontWeight: FontWeight.w600,
+                      //         fontSize: 14,
+                      //       ),
+                      //       // disabledDatesTextStyle: GoogleFonts.poppins(
+                      //       //   fontWeight: FontWeight.w500,
+                      //       //   fontSize: 14,
+                      //       //   color: Color.fromARGB(255, 84, 84, 84),
+                      //       // ),
+
+                      //       specialDatesTextStyle: GoogleFonts.poppins(
+                      //         fontWeight: FontWeight.w600,
+                      //         fontSize: 14,
+                      //         color: const Color.fromARGB(255, 1, 79, 143),
+                      //       ),
+                      //     ),
+                      //     headerStyle: DateRangePickerHeaderStyle(
+                      //         textStyle: GoogleFonts.poppins(
+                      //             fontWeight: FontWeight.w600, fontSize: 24),
+                      //         backgroundColor: Colors.transparent),
+                      //     backgroundColor: Colors.transparent,
+                      //   ),
+                      // ),
+
                       const SizedBox(
                         height: 24,
                       ),
                       CustomTextField(
-                        labeltext: "Select event",
+                        labelText: "Select event",
                         isReadonly: true,
                         controller: eventController,
                         hint: "Select Event",
@@ -252,7 +323,9 @@ class _CustomHomepageState extends State<CustomHomepage> {
                                     .formData;
                                 break;
                             }
+
                             // _form.currentState.
+
                             json["Date"] = (selectedDate ?? DateTime.now())
                                 .toIso8601String();
                             Gsheet.appendAttendance(
@@ -473,59 +546,50 @@ class _CustomHomepageState extends State<CustomHomepage> {
     // );
   }
 
-  Widget _attendanceTypeSelection(String data, {bool isSelected = true}) =>
-      Container(
-        // duration: const Duration(milliseconds: 200),
-        width: 120,
-        height: 120,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-            border: isSelected
-                ? Border.all(
-                    width: 2, color: Colors.blueAccent.withOpacity(0.7))
-                : null,
-            gradient: isSelected
-                ? LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                        Colors.blueAccent,
-                        Colors.blueAccent.withOpacity(0.9),
-                        Colors.blueAccent.withOpacity(0.8)
-                      ])
-                : null,
-            color: isSelected ? null : const Color.fromARGB(10, 0, 0, 0),
-            borderRadius: BorderRadius.circular(10)),
-        margin: const EdgeInsets.only(left: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.string(
-              activityIcon(data),
-              width: 30,
-              height: 30,
-              // fit: ,
-              colorFilter: ColorFilter.mode(
-                  isSelected
-                      ? Colors.white
-                      : const Color.fromARGB(255, 94, 94, 94),
-                  BlendMode.srcIn),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              data,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: isSelected
-                      ? Colors.white
-                      : const Color.fromARGB(255, 94, 94, 94)),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
+  Widget _attendanceTypeSelection(String data, {String icon = "assets/live.svg",bool isSelected = true,Function()? onTap}) =>
+      InkWell(
+        onTap: onTap,
+        child: Container(
+          
+          height: 100,
+          decoration: BoxDecoration(
+              border: isSelected
+                  ? Border.all(
+                      width: 2, color: Colors.blueAccent.withOpacity(0.7))
+                  : null,
+              color: isSelected ? null : const Color.fromARGB(10, 0, 0, 0),
+              borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                icon,
+                width: 40,
+                height: 40,
+                // fit: ,
+                colorFilter: ColorFilter.mode(
+                    isSelected
+                        ? Colors.white
+                        : const Color.fromARGB(255, 94, 94, 94),
+                    BlendMode.srcIn),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                data,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: isSelected
+                        ? Colors.white
+                        : const Color.fromARGB(255, 94, 94, 94)),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          ),
         ),
       );
 

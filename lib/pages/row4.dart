@@ -9,24 +9,27 @@ class Row4 extends StatefulWidget {
   State<Row4> createState() => Row4State();
 }
 
-class Row4State extends State<Row4> with GetFormValues{
-   @override
+class Row4State extends State<Row4> with GetFormValues {
+  @override
   Map<String, dynamic> getFormValues() {
     return formData;
   }
+
   TextEditingController onsite = TextEditingController();
   Map<String, dynamic> formData = {};
 
   onChange(Map<String, dynamic> json) {
     formData[json.keys.first] = json.values.first;
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Column(
-      children: [
-        CustomTextField(labeltext: 'Onsite',controller: onsite,onChange: onChange,) 
-      ]
-
-    );
+    return Column(children: [
+      CustomTextField(
+        labelText: 'Onsite',
+        controller: onsite,
+        onChange: onChange,
+      )
+    ]);
   }
 }

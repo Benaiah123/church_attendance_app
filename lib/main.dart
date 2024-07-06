@@ -1,4 +1,4 @@
-import 'package:church_attendance_app/custom_homepage.dart';
+import 'package:church_attendance_app/selection_page.dart';
 import 'package:church_attendance_app/utils/gsheet.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +16,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.blue, // Change to your desired primary color
           hintColor: Colors.blueAccent, // Change to your desired accent color
-          fontFamily: 'Roboto',
+          fontFamily: 'Poppins',
         ),
+        home: const SelectionPage(),
         // home: const HomePage()
-        home: const CustomHomepage());
+        // home: const CustomHomepage()
+        );
   }
 }

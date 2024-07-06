@@ -9,15 +9,15 @@ class Row7 extends StatefulWidget {
   State<Row7> createState() => Row7State();
 }
 
-class Row7State extends State<Row7> with GetFormValues{
-   @override
+class Row7State extends State<Row7> with GetFormValues {
+  @override
   Map<String, dynamic> getFormValues() {
     return formData;
   }
 
   TextEditingController light = TextEditingController();
   TextEditingController cup = TextEditingController();
-  TextEditingController pre= TextEditingController();
+  TextEditingController pre = TextEditingController();
   TextEditingController creche = TextEditingController();
   Map<String, dynamic> formData = {};
 
@@ -29,14 +29,35 @@ class Row7State extends State<Row7> with GetFormValues{
   Widget build(BuildContext context) {
     return Column(
       children: [
-       CustomTextField(labeltext: 'LIGHT BEARERS',controller: light,onChange: onChange,),
-       const SizedBox(height:20,),
-       CustomTextField(labeltext: 'Cup Bearers',controller: cup,onChange: onChange,),
-       const SizedBox(height:20,),
-       CustomTextField(labeltext: 'Preteens(Cadets)',controller: pre,onChange: onChange,),
-       const SizedBox(height:20,),
-       CustomTextField(labeltext: 'Creche',controller: creche,onChange: onChange,),
-       
+        CustomTextField(
+          labelText: 'LIGHT BEARERS',
+          controller: light,
+          onChange: onChange,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+          labelText: 'Cup Bearers',
+          controller: cup,
+          onChange: onChange,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+          labelText: 'Preteens(Cadets)',
+          controller: pre,
+          onChange: onChange,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+          labelText: 'Creche',
+          controller: creche,
+          onChange: onChange,
+        ),
       ],
     );
   }

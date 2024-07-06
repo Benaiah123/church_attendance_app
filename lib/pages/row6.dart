@@ -9,39 +9,62 @@ class Row6 extends StatefulWidget {
   State<Row6> createState() => Row6State();
 }
 
-class Row6State extends State<Row6> with GetFormValues{
+class Row6State extends State<Row6> with GetFormValues {
   Map<String, dynamic> formData = {};
-   @override
+  @override
   Map<String, dynamic> getFormValues() {
     return formData;
   }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController youtube = TextEditingController();
-  TextEditingController instagram = TextEditingController();
-  TextEditingController facebook = TextEditingController();
-  TextEditingController onsiteAdult = TextEditingController();
-  TextEditingController zoom= TextEditingController();
-  TextEditingController onsiteKids = TextEditingController(); 
-  
+    TextEditingController instagram = TextEditingController();
+    TextEditingController facebook = TextEditingController();
+    TextEditingController onsiteAdult = TextEditingController();
+    TextEditingController zoom = TextEditingController();
+    TextEditingController onsiteKids = TextEditingController();
 
-  onChange(Map<String, dynamic> json) {
-    formData[json.keys.first] = json.values.first;
-  }
+    onChange(Map<String, dynamic> json) {
+      formData[json.keys.first] = json.values.first;
+    }
+
     return Column(
-      children: [ 
-      CustomTextField(labeltext: 'Youtube',controller: youtube,onChange: onChange,),
-      const SizedBox(height:20,),
-       CustomTextField(labeltext: 'Zoom',controller: zoom,onChange: onChange),
-       const SizedBox(height:20,),
-      CustomTextField(labeltext: 'Facebook',controller: facebook,onChange: onChange),
-      const SizedBox(height:20,),
-       CustomTextField(labeltext: 'Instagram',controller: instagram,onChange: onChange),
-       const SizedBox(height:20,),
-       CustomTextField(labeltext: 'Onsite(Adult)',controller: onsiteAdult,onChange: onChange),
-       const SizedBox(height:20,),
-       CustomTextField(labeltext: 'Onsite(Kids)',controller: onsiteKids,onChange: onChange),
-       
+      children: [
+        CustomTextField(
+          labelText: 'Youtube',
+          controller: youtube,
+          onChange: onChange,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+            labelText: 'Zoom', controller: zoom, onChange: onChange),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+            labelText: 'Facebook', controller: facebook, onChange: onChange),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+            labelText: 'Instagram', controller: instagram, onChange: onChange),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+            labelText: 'Onsite(Adult)',
+            controller: onsiteAdult,
+            onChange: onChange),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextField(
+            labelText: 'Onsite(Kids)',
+            controller: onsiteKids,
+            onChange: onChange),
       ],
     );
   }
