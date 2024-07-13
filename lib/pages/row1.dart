@@ -1,3 +1,4 @@
+import 'package:church_attendance_app/utils/main_event_handler.dart';
 import 'package:church_attendance_app/utils/text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -25,31 +26,36 @@ class Row1State extends State<Row1> with GetFormValues {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      // runSpacing: 10,
-      children: [
-        CustomTextField(
-          labelText: "Adult-Onsite",
-          controller: adultOnline,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'Adult-Online',
-          controller: adultOnsite,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'Kids',
-          controller: kids,
-          onChange: onChange,
-        ),
-      ],
+    return AnimatedBuilder(
+      animation: handler,
+      builder: (context,child) {
+        return Column(
+          // runSpacing: 10,
+          children: !handler.onSite?[
+            CustomTextField(
+              labelText: 'Adult-Online',
+              controller: adultOnsite,
+              onChange: onChange,
+            ),
+          ]:[
+            CustomTextField(
+              labelText: "Adult-Onsite",
+              controller: adultOnline,
+              onChange: onChange,
+            ),
+            
+            
+            const SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              labelText: 'Kids',
+              controller: kids,
+              onChange: onChange,
+            ),
+          ],
+        );
+      }
     );
   }
 }

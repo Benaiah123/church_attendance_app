@@ -92,20 +92,24 @@ class _ChooseEventTypeState extends State<ChooseEventType> {
                               padding: const EdgeInsets.symmetric(vertical:10.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    e,
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
+                                  Expanded(
+                                    child: Text(
+                                      e,
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                   if (e == grpvalue)
-                                    const Icon(
+                                    ...[
+                                      const SizedBox(width: 15,),
+                                      const Icon(
                                       Icons.check,
-                                      size: 18,
+                                      size: 20,
                                       color: Color.fromARGB(255, 1, 79, 143),
-                                    )
+                                    )]
                                 ],
                               ),
                             ),

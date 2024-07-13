@@ -42,6 +42,7 @@ class CustomTextField extends StatelessWidget {
         ),
         TextFormField(
           controller: controller,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (va) {
             if ((va ?? "").isEmpty) {
               return "field is required";

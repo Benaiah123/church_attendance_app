@@ -1,5 +1,6 @@
 import 'package:church_attendance_app/custom_homepage.dart';
-import 'package:church_attendance_app/pages/modals/special_event_modal.dart';
+import 'package:church_attendance_app/special_event.dart';
+import 'package:church_attendance_app/sunday_school.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,10 +18,11 @@ class SelectionPage extends StatelessWidget {
       child: Scaffold(
         body: Container(
           width: double.maxFinite,
+          height: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 24),
           decoration: const BoxDecoration(
               image:
-                  DecorationImage(image: AssetImage("assets/backgound.jpg"))),
+                  DecorationImage(image: AssetImage("assets/backgound.jpg"),fit: BoxFit.cover)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -69,10 +71,12 @@ class SelectionPage extends StatelessWidget {
                         icon: "assets/teenyicons_church-solid.svg"),
                     _selectionContainer(Position.topRight,
                         title: "Sunday School",
+                        onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const SundaySchool())),
                         icon: "assets/sunday_school.svg"),
                     _selectionContainer(Position.bottomLeft,
                         title: "Special Event",
-                        onTap: ()=>showSpecialEventModal(context),
+
+                        onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const SpecialEventModal())),
                         icon: "assets/special_event.svg"),
                     _selectionContainer(Position.bottomRight,
                         title: "Statistics", icon: "assets/stats.svg"),
@@ -126,13 +130,15 @@ Widget _selectionContainer(Position position,
         children: [
           Align(alignment: Alignment.centerRight, child: SvgPicture.asset(icon)),
           const Spacer(),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                height: 1.2,
-                fontSize: 20,
-                color: textColor),
+          FittedBox(
+            child: Text(
+              title,
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                  fontSize: 20,
+                  color: textColor),
+            ),
           )
         ],
       ),

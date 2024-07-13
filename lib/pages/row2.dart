@@ -1,4 +1,5 @@
 import 'package:church_attendance_app/pages/row1.dart';
+import 'package:church_attendance_app/utils/main_event_handler.dart';
 import 'package:church_attendance_app/utils/text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -30,63 +31,70 @@ class Row2State extends State<Row2> with GetFormValues {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CustomTextField(
-          labelText: 'Youtube',
-          controller: youtube,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'Instagram',
-          controller: instagram,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'Facebook',
-          controller: facebook,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'Onsite',
-          controller: onsite,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'Decision',
-          controller: decision,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'Rededication',
-          controller: rededication,
-          onChange: onChange,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        CustomTextField(
-          labelText: 'First timers',
-          controller: firstTimers,
-          onChange: onChange,
-        ),
-      
-      ],
+    return AnimatedBuilder(
+      animation: handler,
+      builder: (context,child) {
+        return Column(
+          children: !handler.onSite?[CustomTextField(
+              labelText: 'Youtube',
+              controller: youtube,
+              onChange: onChange,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              labelText: 'Instagram',
+              controller: instagram,
+              onChange: onChange,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              labelText: 'Facebook',
+              controller: facebook,
+              onChange: onChange,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ]:[
+            
+            CustomTextField(
+              labelText: 'Onsite',
+              controller: onsite,
+              onChange: onChange,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            
+            CustomTextField(
+              labelText: 'Decision',
+              controller: decision,
+              onChange: onChange,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              labelText: 'Rededication',
+              controller: rededication,
+              onChange: onChange,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              labelText: 'First timers',
+              controller: firstTimers,
+              onChange: onChange,
+            ),
+          
+          ],
+        );
+      }
     );
   }
 }
