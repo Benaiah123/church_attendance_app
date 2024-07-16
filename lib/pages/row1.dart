@@ -43,6 +43,14 @@ class Row1State extends State<Row1> with GetFormValues {
               controller: adultOnline,
               onChange: onChange,
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              labelText: 'Teens Pre-worship prayer',
+              controller: kids,
+              onChange: onChange,
+            ),
             
             
             const SizedBox(

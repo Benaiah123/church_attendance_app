@@ -1,12 +1,28 @@
 import 'package:church_attendance_app/custom_homepage.dart';
 import 'package:church_attendance_app/special_event.dart';
 import 'package:church_attendance_app/sunday_school.dart';
+import 'package:church_attendance_app/utils/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SelectionPage extends StatelessWidget {
+class SelectionPage extends StatefulWidget {
   const SelectionPage({super.key});
+
+  @override
+  State<SelectionPage> createState() => _SelectionPageState();
+}
+
+class _SelectionPageState extends State<SelectionPage> {
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      showAccessCodeDialog(context);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +37,9 @@ class SelectionPage extends StatelessWidget {
           height: double.maxFinite,
           padding: const EdgeInsets.symmetric(horizontal: 24),
           decoration: const BoxDecoration(
-              image:
-                  DecorationImage(image: AssetImage("assets/backgound.jpg"),fit: BoxFit.cover)),
+              image: DecorationImage(
+                  image: AssetImage("assets/backgound.jpg"),
+                  fit: BoxFit.cover)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,18 +54,21 @@ class SelectionPage extends StatelessWidget {
                       child: Image.asset(
                         "assets/church_logo.png",
                       )),
-                     const SizedBox(width: 15,),
-                      Text(
-                "FGC-VGC\nData record entry",
-                style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    height: 1.2),
-              ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Expanded(
+                    child: Text(
+                      "FGC-VGC\nData record entry",
+                      style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          height: 1.2),
+                    ),
+                  ),
                 ],
               ),
-              
               const Spacer(),
               Container(
                 padding: const EdgeInsets.all(15),
@@ -67,16 +87,22 @@ class SelectionPage extends StatelessWidget {
                   children: [
                     _selectionContainer(Position.topLeft,
                         title: "Main Event",
-                        onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const CustomHomepage())),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const CustomHomepage())),
                         icon: "assets/teenyicons_church-solid.svg"),
                     _selectionContainer(Position.topRight,
                         title: "Sunday School",
-                        onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const SundaySchool())),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const SundaySchool())),
                         icon: "assets/sunday_school.svg"),
                     _selectionContainer(Position.bottomLeft,
                         title: "Special Event",
-
-                        onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const SpecialEventModal())),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SpecialEventModal())),
                         icon: "assets/special_event.svg"),
                     _selectionContainer(Position.bottomRight,
                         title: "Statistics", icon: "assets/stats.svg"),
@@ -128,7 +154,8 @@ Widget _selectionContainer(Position position,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Align(alignment: Alignment.centerRight, child: SvgPicture.asset(icon)),
+          Align(
+              alignment: Alignment.centerRight, child: SvgPicture.asset(icon)),
           const Spacer(),
           FittedBox(
             child: Text(
@@ -144,6 +171,121 @@ Widget _selectionContainer(Position position,
       ),
     ),
   );
+}
+
+showAccessCodeDialog(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          child: AccessCodeDialog()));
+}
+
+class AccessCodeDialog extends StatefulWidget {
+  const AccessCodeDialog({super.key});
+
+  @override
+  State<AccessCodeDialog> createState() => _AccessCodeDialogState();
+}
+
+class _AccessCodeDialogState extends State<AccessCodeDialog> {
+  TextEditingController accessController = TextEditingController();
+  final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
+  String? error;
+  bool canPop = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: canPop,
+      child: IntrinsicHeight(
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.1)),
+                child: Text(
+                  "Enter Access code",
+                  style: GoogleFonts.poppins(
+                      fontSize: 24, fontWeight: FontWeight.w600),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              CustomTextField(
+                  key: _key,
+                  formatter: const [],
+                  inputType: TextInputType.text,
+                  controller: accessController,
+                  validation: (value) => null,
+                  labelText: "Access code"),
+              if (error != null)
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      error!,
+                      style: GoogleFonts.poppins(color: Colors.red),
+                    )),
+              const SizedBox(
+                height: 15,
+              ),
+              Theme(
+                data: Theme.of(context).copyWith(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent),
+                child: InkWell(
+                  splashFactory: NoSplash.splashFactory,
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    if (accessController.text.trim().toLowerCase() ==
+                        "usher123") {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Access Granted",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white))));
+                      return;
+                    }
+                    error = "Invalid access code";
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: double.maxFinite,
+                    height: 55,
+                    alignment: Alignment.center,
+                    decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        color:
+                            //  eventController.text.trim().isEmpty
+                            //     ? const Color.fromARGB(255, 75, 99, 118)
+                            //     :
+                            const Color.fromARGB(255, 1, 79, 143)),
+                    child: const Text(
+                      "Continue",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 enum Position { topLeft, topRight, bottomLeft, bottomRight }

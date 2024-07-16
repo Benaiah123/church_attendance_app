@@ -227,6 +227,7 @@ class _SundaySchoolState extends State<SundaySchool> {
                         ),
                       ),
                     ),
+                    
                     SizedBox(
                       height: MediaQuery.paddingOf(context).bottom + 10,
                     ),

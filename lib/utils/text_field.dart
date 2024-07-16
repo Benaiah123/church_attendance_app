@@ -4,11 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
   final String labelText;
+
   final TextEditingController? controller;
   final bool isReadonly;
   final Function()? onTap;
   final bool hasSuffix;
   final String? hint;
+  final String? Function(String? value)? validation;
   final List<TextInputFormatter>? formatter;
   final TextInputType? inputType;
   final Function(Map<String, dynamic> valuePair)? onChange;
@@ -17,6 +19,7 @@ class CustomTextField extends StatelessWidget {
       {super.key,
       this.onTap,
       this.hint,
+      this.validation,
       this.inputType,
       this.formatter,
       this.hasSuffix = false,
@@ -43,7 +46,7 @@ class CustomTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (va) {
+          validator: validation ?? (va) {
             if ((va ?? "").isEmpty) {
               return "field is required";
             }
@@ -51,8 +54,9 @@ class CustomTextField extends StatelessWidget {
           },
           onTap: onTap,
           readOnly: isReadonly,
-          keyboardType: inputType?? TextInputType.number,
-          inputFormatters: formatter ?? [FilteringTextInputFormatter.digitsOnly],
+          keyboardType: inputType ?? TextInputType.number,
+          inputFormatters:
+              formatter ?? [FilteringTextInputFormatter.digitsOnly],
           onChanged: (value) {
             if (onChange != null) {
               onChange!({labelText: value});

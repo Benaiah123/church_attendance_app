@@ -23,6 +23,10 @@ class _SpecialEventModalState extends State<SpecialEventModal> {
   TextEditingController decision = TextEditingController();
   TextEditingController rededication = TextEditingController();
   TextEditingController firstTimers = TextEditingController();
+
+  TextEditingController bap = TextEditingController();
+  TextEditingController children = TextEditingController();
+  // TextEditingController firstTimers = TextEditingController();
   Map<String, dynamic> formData = {};
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   bool isLoading = false;
@@ -31,14 +35,16 @@ class _SpecialEventModalState extends State<SpecialEventModal> {
   }
 
   clear() {
-    youtube.text="";
-    eventName.text="";
-    instagram.text="";
-    facebook.text="";
-    onsite.text="";
-    decision.text="";
-    rededication.text="";
-    firstTimers.text="";
+    youtube.text = "";
+    eventName.text = "";
+    instagram.text = "";
+    facebook.text = "";
+    onsite.text = "";
+    decision.text = "";
+    rededication.text = "";
+    firstTimers.text = "";
+    children.text = "";
+    bap.text = "";
   }
 
   @override
@@ -169,6 +175,22 @@ class _SpecialEventModalState extends State<SpecialEventModal> {
                           height: 20,
                         ),
                         CustomTextField(
+                          labelText: 'Children',
+                          controller: children,
+                          onChange: onChange,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomTextField(
+                          labelText: 'Holy Spirit Baptismal',
+                          controller: bap,
+                          onChange: onChange,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomTextField(
                           labelText: 'Decision',
                           controller: decision,
                           onChange: onChange,
@@ -203,14 +225,18 @@ class _SpecialEventModalState extends State<SpecialEventModal> {
                       splashFactory: NoSplash.splashFactory,
                       splashColor: Colors.transparent,
                       onTap: () async {
-                        if (!_form.currentState!.validate() || isLoading) return;
+                        if (!_form.currentState!.validate() || isLoading)
+                          return;
                         setState(() {
                           isLoading = true;
                         });
                         await updateSheet(context,
-                      selectedDate: selectedDate,
-                                sheetTitle: "Special Event", json: {"Event Name":formData["Event Name"],...formData})
-                            .then((value) {
+                            selectedDate: selectedDate,
+                            sheetTitle: "Special Event",
+                            json: {
+                              "Event Name": formData["Event Name"],
+                              ...formData
+                            }).then((value) {
                           setState(() {
                             isLoading = false;
                           });
