@@ -44,6 +44,8 @@ class _HomePageState extends State<HomePage> {
     super.setState(fn);
   }
 
+  
+
   final List<Widget> _pages = [
     const Row1(),
     const Row2(),
@@ -74,7 +76,6 @@ class _HomePageState extends State<HomePage> {
           ),
           Center(
             child: DropdownButton<String>(
-            
               value: _selectedItem,
               onChanged: (String? newValue) {
                 setState(() {
@@ -100,11 +101,7 @@ class _HomePageState extends State<HomePage> {
           Container(
             child: _pages[_selectedIndex],
           ),
-         ElevatedButton(onPressed: (){}, child: 
-         const Text(
-          "Submit"
-         )
-         )
+          ElevatedButton(onPressed: () {}, child: const Text("Submit"))
         ]),
       ),
     );
