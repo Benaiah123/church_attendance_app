@@ -13,6 +13,7 @@ class Row1State extends State<Row1> with GetFormValues {
   TextEditingController adultOnsite = TextEditingController();
   TextEditingController adultOnline = TextEditingController();
   TextEditingController kids = TextEditingController();
+  TextEditingController teens = TextEditingController();
   Map<String, dynamic> formData = {};
 
   onChange(Map<String, dynamic> json) {
@@ -48,7 +49,7 @@ class Row1State extends State<Row1> with GetFormValues {
             ),
             CustomTextField(
               labelText: 'Teens Pre-worship prayer',
-              controller: kids,
+              controller: teens,
               onChange: onChange,
             ),
             
